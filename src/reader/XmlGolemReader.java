@@ -30,6 +30,8 @@ public class XmlGolemReader implements XmlReader{
 	static String sum;
 	static int globalCounter = 0;
 	
+	
+	
 	public String readNewData(String path) {
 		String line = "";
 		String result = "";
