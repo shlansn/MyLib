@@ -17,7 +17,7 @@ public class FileExplorerDialog {
 	public static String oeffnen() {
 	    final JFileChooser chooser = new JFileChooser("Verzeichnis wählen");
 	    chooser.setDialogType(JFileChooser.OPEN_DIALOG);
-	    chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 	    final File file = new File("/home");
 	
 	    chooser.setCurrentDirectory(file);

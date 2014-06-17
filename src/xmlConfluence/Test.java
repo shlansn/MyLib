@@ -11,13 +11,13 @@ public class Test {
 		// TODO Auto-generated method stub
 
 		
-//		XmlWindow neu = new XmlWindow(Display.getDefault());
-//		neu.main(null);
-//		
-//		XmlWorker worker = new XmlWorker("X:\\xml\\xmltest.xml", "X:\\xml\\xmltest2.xml", "PETER");
-//		String buf = worker.readNewData();
-//		System.out.println(buf);
-//		worker.writeNewData(buf);
+		XmlWindow neu = new XmlWindow(Display.getDefault());
+		neu.main(null);
+		
+		XmlWorker worker = new XmlWorker("X:\\xml\\xmltest.xml", "X:\\xml\\xmltest2.xml", "PETER");
+		String buf = worker.readNewData();
+		System.out.println(buf);
+		worker.writeNewData(buf);
 		
 		ZipWorker zip = new ZipWorker(null, null);
 		zip.zipIt(null);

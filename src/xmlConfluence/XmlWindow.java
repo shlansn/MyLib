@@ -155,7 +155,7 @@ public class XmlWindow extends Shell {
 				}
 			}
 		});
-		btnCheckButton.setBounds(12, 205, 111, 16);
+		btnCheckButton.setBounds(12, 226, 111, 16);
 		btnCheckButton.setText("generiere Logfile");
 		
 
@@ -163,6 +163,26 @@ public class XmlWindow extends Shell {
 		textPathLog = new Text(group, SWT.BORDER);
 		textPathLog.setEditable(false);
 		textPathLog.setBounds(10, 51, 205, 23);
+		
+		Button btnOk = new Button(this, SWT.NONE);
+		btnOk.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//TODO start action
+			}
+		});
+		btnOk.setBounds(370, 317, 75, 25);
+		btnOk.setText("OK");
+		
+		Button btnAbbrechen = new Button(this, SWT.NONE);
+		btnAbbrechen.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				//TODO just close properly
+			}
+		});
+		btnAbbrechen.setText("Abbrechen");
+		btnAbbrechen.setBounds(462, 317, 75, 25);
 		
 		createContents();
 	}
@@ -172,7 +192,7 @@ public class XmlWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("Neuen Bereich aus Musterprojekt importieren");
-		setSize(563, 330);
+		setSize(563, 391);
 
 	}
 

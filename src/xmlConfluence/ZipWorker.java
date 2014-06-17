@@ -66,7 +66,7 @@ public class ZipWorker {
     public void generateFileList(File node){
     	//add file only
 		if(node.isFile()){
-			//if Zip is included ignore it
+			//if Zip is included ignore it (just for testing)
 			if (!node.getAbsoluteFile().toString().endsWith(".zip")) {
 				fileListZip.add(generateZipEntry(node.getAbsoluteFile().toString()));
 			}
