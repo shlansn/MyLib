@@ -1,5 +1,13 @@
 package xmlConfluence;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -19,11 +27,18 @@ import org.eclipse.swt.events.TouchListener;
 import org.eclipse.swt.events.TouchEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Canvas;
 
 public class XmlWindow extends Shell {
 	
 	private String pathForFile;
 	private String pathForLog;
+	private FileExplorerDialog fEx = new FileExplorerDialog();
+	private XmlWorker xmlWorker = new XmlWorker("X:\\xml\\TEMP", "X:\\xml\\TEMP", "XXX");
+	private ZipWorker zipWorker = new ZipWorker();
 	
 	private Text textPathFile;
 	private Text textProjectName;
@@ -31,10 +46,10 @@ public class XmlWindow extends Shell {
 	private Text textPathLog;
 
 	/**
-	 * Launch the application.
+	 * open dialog
 	 * @param args
 	 */
-	public static void main(String args[]) {
+	public void run() {
 		try {
 			Display display = Display.getDefault();
 			XmlWindow shell = new XmlWindow(display);
@@ -49,7 +64,7 @@ public class XmlWindow extends Shell {
 			e.printStackTrace();
 		}
 	}
-
+	
 	/**
 	 * Create the shell.
 	 * @param display
@@ -69,7 +84,7 @@ public class XmlWindow extends Shell {
 		btnNewButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				pathForFile = FileExplorerDialog.oeffnen();
+				pathForFile = fEx.oeffnen();
 				textPathFile.setText(pathForFile);
 			}
 		});
@@ -101,7 +116,7 @@ public class XmlWindow extends Shell {
 		textProjectName.setBounds(352, 103, 130, 23);
 		
 		Label label = new Label(this, SWT.NONE);
-		label.setText("Bitte w\u00E4hlen Sie den Namen des neuen Projektbereichs:");
+		label.setText("Bitte w\u00E4hlen Sie den Namen des neuen Projektkürzel:");
 		label.setBounds(10, 138, 307, 23);
 		
 		textProjectShort = new Text(this, SWT.BORDER);
@@ -127,6 +142,13 @@ public class XmlWindow extends Shell {
 		group.setBounds(129, 205, 361, 82);
 		
 		final Button button = new Button(group, SWT.NONE);
+		button.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pathForLog = fEx.oeffnen();
+				textPathLog.setText(pathForLog);
+			}
+		});
 		button.setEnabled(false);
 		button.setText("Durchsuchen...");
 		button.setBounds(221, 49, 130, 25);
@@ -169,6 +191,25 @@ public class XmlWindow extends Shell {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				//TODO start action
+				LoadScreen l = new LoadScreen();
+				l.run();
+				
+				//first unzip it TODO fix me
+				zipWorker.unZipIt("X:\\xml\\musterprojekt.zip", "X:\\xml\\TEMP");
+
+				//config file
+				String data = xmlWorker.readConfigData();
+				String buf = data.replaceAll("Musterprojekt", "XXX");
+				xmlWorker.writeConfigData(buf);
+				//xml file
+				data = xmlWorker.readXmlData();
+				buf = data.replaceAll("Musterprojekt", "XXX");
+				xmlWorker.writeXmlData(buf);
+				
+				//zip it TODO fix me
+				zipWorker.zipIt("X:\\xml\\New.zip");
+				l.close();
+				
 			}
 		});
 		btnOk.setBounds(370, 317, 75, 25);
@@ -183,7 +224,7 @@ public class XmlWindow extends Shell {
 		});
 		btnAbbrechen.setText("Abbrechen");
 		btnAbbrechen.setBounds(462, 317, 75, 25);
-		
+
 		createContents();
 	}
 
@@ -192,7 +233,7 @@ public class XmlWindow extends Shell {
 	 */
 	protected void createContents() {
 		setText("Neuen Bereich aus Musterprojekt importieren");
-		setSize(563, 391);
+		setSize(576, 391);
 
 	}
 

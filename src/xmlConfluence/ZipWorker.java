@@ -14,18 +14,11 @@ public class ZipWorker {
 
     List<String> fileListZip;
     List<String> fileListUnzip;
-    //for unzipping
-    private static final String INPUT_ZIP_FILE = "X:\\xml\\test.zip";
-    private static final String OUTPUT_FOLDER = "X:\\xml\\Neuer Ordner";
     
     //for zipping
-    private String OUTPUT_ZIP_FILE = "X:\\xml\\test.zip";
-    private String SOURCE_FOLDER = "X:\\xml";
+    private String SOURCE_FOLDER = "X:\\xml\\TEMP";
  
-    public ZipWorker(String directoryToZip, String directoryForOutput) {
-//    	TODO fix me
-//    	SOURCE_FOLDER = directoryToZip;
-//    	OUTPUT_ZIP_FILE = directoryForOutput;
+    public ZipWorker() {
     	fileListZip = new ArrayList<String>();
     }
     
@@ -35,7 +28,7 @@ public class ZipWorker {
     	byte[] buffer = new byte[1024];
  
     	try{
-	    	FileOutputStream fos = new FileOutputStream(OUTPUT_ZIP_FILE);
+	    	FileOutputStream fos = new FileOutputStream(directoryForOutput);
 	    	ZipOutputStream zos = new ZipOutputStream(fos);
 	 
 	    	for(String file : this.fileListZip){
@@ -51,6 +44,8 @@ public class ZipWorker {
     	}
     	zos.closeEntry();
     	zos.close();
+    	File temp = new File(SOURCE_FOLDER);
+    	temp.delete();
  
 //    	System.out.println("Done");
     }catch(IOException ex){
@@ -90,15 +85,15 @@ public class ZipWorker {
     
     public void unZipIt(String zipFile, String outputFolder){
     	//TODO fix me
-    	zipFile = INPUT_ZIP_FILE;
-    	outputFolder = OUTPUT_FOLDER;
+//    	zipFile = INPUT_ZIP_FILE;
+//    	outputFolder = OUTPUT_FOLDER;
     	
         byte[] buffer = new byte[1024];
     
         try{
     
 	       	//create output directory is not exists
-	       	File folder = new File(OUTPUT_FOLDER);
+	       	File folder = new File(outputFolder);
 	       	if(!folder.exists()){
 	       		folder.mkdir();
 	       	}

@@ -1,7 +1,11 @@
 package xmlConfluence;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -9,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.RandomAccessFile;
 
 public class XmlWorker {
 	
@@ -25,18 +30,16 @@ public class XmlWorker {
 		this.patternNew = patternNew;
 	}
 
-	public String readNewData() {
+	public String readConfigData() {
 		String line = "";
 		String result = "";
 		
 		try {
-			BufferedReader in = new BufferedReader(new InputStreamReader( new FileInputStream (new File(pathMuster)),"UTF-8"));
+//			BufferedReader in = new BufferedReader(new InputStreamReader( new FileInputStream (new File(pathMuster)),"UTF-8"));
+			RandomAccessFile in = new RandomAccessFile(pathMuster + "\\exportDescriptor.properties", "rw");
 			while (line != null) {
 				line = in.readLine();
 				if (line != null) {
-					if (line.contains(patternOld)){
-						line = line.replaceAll(patternOld, patternNew);
-					}
 					result = result + line + "\n";
 				}
 			}
@@ -50,8 +53,54 @@ public class XmlWorker {
 		return null;
 	}
 	
-	public void writeNewData(String data) {
-		File out = new File(pathNew);
+	public String readXmlData() {
+		String line = "";
+		String result = "";
+		
+		try {
+//			BufferedReader in = new BufferedReader(new InputStreamReader( new FileInputStream (new File(pathMuster)),"UTF-8"));
+			RandomAccessFile in = new RandomAccessFile(pathMuster + "\\entities.xml", "rw");
+			while (line != null) {
+				line = in.readLine();
+				if (line != null) {
+					result = result + line + "\n";
+				}
+			}
+			in.close();
+			return result;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace(); //TODO ERROR HANDLING
+		} catch (IOException e) {
+			e.printStackTrace(); //TODO ERROR HANDLING
+		} 
+		return null;
+	}
+	
+	public void writeConfigData(String data) {
+		File out = new File(pathNew + "\\exportDescriptor.properties");
+		if(!out.exists()){
+			out.mkdir();
+       	}
+		out.setWritable(true);
+		try {
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out)));
+			writer.write(data);
+			writer.close();
+		}
+		catch (FileNotFoundException e) {
+			e.printStackTrace(); //TODO ERROR HANDLING
+		}catch (IOException e) {
+			e.printStackTrace(); //TODO ERROR HANDLING
+		}
+		//TODO test if file exists, otherwise throw exception
+	}
+	
+	public void writeXmlData(String data) {
+		File out = new File(pathNew + "\\entities.xml");
+		if(!out.exists()){
+			out.mkdir();
+       	}
+		out.setWritable(true);
 		try {
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(out)));
 			writer.write(data);
